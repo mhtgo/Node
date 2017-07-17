@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>messageBoard</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <style type="text/css">
+        #success {
+            display: none;
+        }
+        .messageBox {
+            padding: 10px 30px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<h1>心情日历</h1>
+
+<div class="container">
+    <div class="row">
+        <form class="form-horizontal col-lg-6" action="/" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="姓名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message" class="col-sm-2 control-label">留言</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" rows="3" name="message" id="message"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-success" id="submit">提交</button>
+                </div>
+            </div>
+            <div class="alert alert-success" role="alert" id="success">
+                <a href="#" class="alert-link">表单已经成功提交</a>
+            </div>
+        </form>
+    </div>
+    <nav>
+        <ul class="pagination">
+            <!--分页按钮-->
+            <% for(var i = 1 ; i < totalPage ; i++){%>
+                <li class="pageBtn"><a href="/<%=i%>"><%=i%></a></li>
+            <%}%>
+        </ul>
+    </nav>
+</div>
+
+<!--留言信息-->
+<% for(var i = 0 ; i < pageMessage.length ; i++){ %>
+    <div class="messageBox">
+        <p>【姓名】<%= pageMessage[i].name %></p>
+        <p>【留言】<%= pageMessage[i].message %></p>
+        <p>【时间】<%= pageMessage[i].nowtime %></p>
+        <p><a href="/delete?id=<%= pageMessage[i]._id %>">删除</a></p>
+    </div>
+<% } %>
+
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    //提交后显示弹窗
+    $("#submit").click(function(){
+        ("#success").show(500)
+    });
+
+    //给所有的页码按钮，添加监听
+    $(".pageBtn").click(function(){
+        $(this).addClass("active").siblings().removeClass("active");
+    });
+
+</script>
+</body>
+</html>
